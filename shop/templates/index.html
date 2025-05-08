@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    <h1>Just Before Race</h1>
+{% endblock %}
+{% block content %}
+    <label><h4>Find a particular product:</h4></label>
+    <input class="input searchbar bg-warning" id="product_search" type="text" placeholder=" Product Name">
+    <div id="searched_products">
+
+    </div>
+    <hr>
+<div class="row row-cols-auto g-10">
+    {% for category in categories %}
+        <div class="col-6">
+            <h3><u>{{category.name}}:</u></h3>
+        {% for product in category.products.all %}
+            <h5><button class='my_card bg-warning order_button'  data-bs-toggle="modal" data-bs-target="#OrderModal_{{product.id}}" data-price="{{product.price}}" data-id="{{product.id}}">
+                        {{product.name}} {{product.price}} $
+                    </button></h5>
+            <div class="modal fade" id="OrderModal_{{product.id}}" tabindex="-1" aria-labelledby="OrderModal" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Order {{product.name}} </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="price_{{product.id}}" >Price: {{product.price}} $</p>
+                    <p>{{product.description}}</p>
+                    <hr>
+                    {% csrf_token %}
+                    <p>Amount of {{product.name}} <input type="number" id="order_amount_{{product.id}}"></p>
+                    <div id="final_price_{{product.id}}">
+                        <p>Final price: 0 $</p>
+                    </div>
+                    <hr>
+                    <button class="btn btn-warning btn-header final-order-btn" data-id="{{product.id}}"  type="submit">Order</button>
+                </div>
+                </div>
+                </div>
+                </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    </div>
+<script src="/static/js/order.js"></script>
+<script src="/static/js/search.js"></script>
+{% endblock %}
+
